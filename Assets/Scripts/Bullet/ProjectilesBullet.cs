@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ProjectilesBullet : MonoBehaviour
@@ -15,28 +13,34 @@ public class ProjectilesBullet : MonoBehaviour
     private Rigidbody2D rb;
     [SerializeField] private GameObject fire;
 
-    private void Start() {
+    private void Start()
+    {
         anim = GetComponent<Animator>();
         coll = GetComponent<BoxCollider2D>();
         rb = GetComponent<Rigidbody2D>();
         transform.rotation = gunDirection.transform.rotation;
 
     }
-    private void OnEnable() {
+    private void OnEnable()
+    {
         transform.rotation = gunDirection.transform.rotation;
         fire.SetActive(true);
     }
 
-    private void Update() {
-        if(hit) return;
+    private void Update()
+    {
+        if (hit) return;
         float movementSpeed = speed * Time.deltaTime;
         transform.Translate(0, movementSpeed, 0);
         colldownTime += Time.deltaTime;
-        if(colldownTime > lifeTime) gameObject.SetActive(false);
+        if (colldownTime > lifeTime) gameObject.SetActive(false);
 
     }
-    private void OnTriggerEnter2D(Collider2D other) {
-        if(other.gameObject.CompareTag("Enemy")){
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            AudioController.instance.HitSound();
             hit = true;
             fire.SetActive(false);
             anim.SetTrigger("activated");
@@ -44,7 +48,8 @@ public class ProjectilesBullet : MonoBehaviour
         }
     }
 
-    public void SetRocket(){
+    public void SetRocket()
+    {
         hit = false;
         colldownTime = 0;
         gameObject.SetActive(true);
@@ -52,7 +57,8 @@ public class ProjectilesBullet : MonoBehaviour
 
     }
 
-    public void Deactivate(){
+    public void Deactivate()
+    {
         gameObject.SetActive(false);
     }
 }

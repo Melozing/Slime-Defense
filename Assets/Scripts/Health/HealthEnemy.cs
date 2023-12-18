@@ -1,13 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class HealthEnemy : MonoBehaviour
 {
     [SerializeField] private float startingHealthEnemy;
-    public float currentHealthEnemy {get; private set;}
+    public float currentHealthEnemy { get; private set; }
     private Animator anim;
     private bool dead;
     [SerializeField] private GameObject itemHPlv1;
@@ -17,45 +14,56 @@ public class HealthEnemy : MonoBehaviour
     [SerializeField] private int numberOfFlashes;
     private SpriteRenderer sprite;
 
-    private void Start() {
+    private void Start()
+    {
         currentHealthEnemy = startingHealthEnemy;
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
 
     }
 
-    public void TakeDamageEnemy(float _damage){
-        currentHealthEnemy = Mathf.Clamp(currentHealthEnemy - _damage,0,startingHealthEnemy);
-        if(currentHealthEnemy > 0){
-
-        }else{
-            if(!dead){
+    public void TakeDamageEnemy(float _damage)
+    {
+        currentHealthEnemy = Mathf.Clamp(currentHealthEnemy - _damage, 0, startingHealthEnemy);
+        if (currentHealthEnemy > 0)
+        {
+        }
+        else
+        {
+            if (!dead)
+            {
+                AudioController.instance.PlayerDieSound();
                 anim.SetTrigger("die");
-                if(GetComponent<EnemyMovement>()!=null)  GetComponent<EnemyMovement>().enabled = false;
-                if(GetComponent<Collider2D>()!= null) GetComponent<Collider2D>().enabled = false;
+                if (GetComponent<EnemyMovement>() != null) GetComponent<EnemyMovement>().enabled = false;
+                if (GetComponent<Collider2D>() != null) GetComponent<Collider2D>().enabled = false;
                 dead = true;
             }
         }
     }
 
-    private IEnumerator Invulnerability(){
+    private IEnumerator Invulnerability()
+    {
         // Physics2D.IgnoreLayerCollision(6,7,true);
-        for(int i=0;i<numberOfFlashes;i++){
+        for (int i = 0; i < numberOfFlashes; i++)
+        {
             sprite.color = Color.gray;
-            yield return new WaitForSeconds(iFramesDuration / (numberOfFlashes*2));
+            yield return new WaitForSeconds(iFramesDuration / (numberOfFlashes * 2));
             sprite.color = Color.white;
-            yield return new WaitForSeconds(iFramesDuration / (numberOfFlashes*2));
+            yield return new WaitForSeconds(iFramesDuration / (numberOfFlashes * 2));
         }
         // Physics2D.IgnoreLayerCollision(6,7,false);
     }
-    private void DeactivateEnemy(){
+    private void DeactivateEnemy()
+    {
         Destroy(gameObject);
-        if(UnityEngine.Random.value <= dropChange){
+        if (UnityEngine.Random.value <= dropChange)
+        {
             SpawnItem();
         }
 
     }
-    private void SpawnItem(){
+    private void SpawnItem()
+    {
         Instantiate(itemHPlv1, transform.position, Quaternion.identity);
 
     }

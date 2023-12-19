@@ -19,6 +19,7 @@ public class Attack : MonoBehaviour
 
     private void AttackGun()
     {
+        if (Manager.Ins.m_isGameover) return;
         cooldownTime = 0;
         AudioController.instance.PlayerShootSound();
         rockets[FindRocket()].transform.position = rocketPoints.position;

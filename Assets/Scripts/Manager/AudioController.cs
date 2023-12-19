@@ -16,6 +16,7 @@ public class AudioController : MonoBehaviour
     public AudioClip hitSound;
     public AudioClip playerGetHPSound;
     public AudioClip playerDieSound;
+    public AudioClip clickButtonSound;
 
     private void Awake()
     {
@@ -60,6 +61,11 @@ public class AudioController : MonoBehaviour
     public void HitSound()
     {
         PlaySound(hitSound);
+    }
+
+    public void ClickButtonSound()
+    {
+        PlaySound(clickButtonSound);
     }
 
     public void PlayerGetHPSound()

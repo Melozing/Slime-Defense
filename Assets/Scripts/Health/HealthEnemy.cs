@@ -27,6 +27,7 @@ public class HealthEnemy : MonoBehaviour
         currentHealthEnemy = Mathf.Clamp(currentHealthEnemy - _damage, 0, startingHealthEnemy);
         if (currentHealthEnemy > 0)
         {
+            dead = false;
         }
         else
         {
@@ -37,8 +38,15 @@ public class HealthEnemy : MonoBehaviour
                 if (GetComponent<EnemyMovement>() != null) GetComponent<EnemyMovement>().enabled = false;
                 if (GetComponent<Collider2D>() != null) GetComponent<Collider2D>().enabled = false;
                 dead = true;
+                Manager.Ins.EnemyKilled++;
+                GameGUIManager.Ins.UpdatekilledCounting(Manager.Ins.EnemyKilled);
             }
         }
+    }
+
+    private bool isDead()
+    {
+        return dead;
     }
 
     private IEnumerator Invulnerability()
@@ -64,8 +72,8 @@ public class HealthEnemy : MonoBehaviour
     }
     private void SpawnItem()
     {
+        if (Manager.Ins.m_isGameover) return;
         Instantiate(itemHPlv1, transform.position, Quaternion.identity);
-
     }
 
 }

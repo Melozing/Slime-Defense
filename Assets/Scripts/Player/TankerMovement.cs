@@ -5,6 +5,7 @@ public class TankerMovement : MonoBehaviour
     public float speed;
     public float rotationSpeed;
     private Animator anim;
+    public bool isPlay;
 
     private void Start()
     {
@@ -13,6 +14,7 @@ public class TankerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (!Manager.Ins.m_isPlay) return;
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 

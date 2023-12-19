@@ -26,21 +26,32 @@ public class HealthPlayer : MonoBehaviour
         if (currentHealthPlayer > 0)
         {
             StartCoroutine(Invulnerability());
+            dead = false;
         }
         else
         {
-            // if(!dead){
             AudioController.instance.PlayerDieSound();
             if (gun != null) gun.SetActive(false);
             anim.SetTrigger("die");
             if (GetComponent<TankerMovement>() != null) GetComponent<TankerMovement>().enabled = false;
-            // dead = true;
-            // }
+            dead = true;
+
+            Manager.Ins.m_isGameover = true;
+            GameGUIManager.Ins.ShowPauseButton(false);
+            GameGUIManager.Ins.gameDialog.UpdateDialog("Your Score : ", "Best Killed : x" + Manager.Ins.m_enemyKilled, "Survival time : " + Manager.Ins.timeLife + "s");
+            GameGUIManager.Ins.gameDialog.Show(true);
+            GameGUIManager.Ins.CurDialog = GameGUIManager.Ins.gameDialog;
         }
     }
     public void AddHealth(float _item)
     {
+        if (isDead()) return;
         currentHealthPlayer = Mathf.Clamp(currentHealthPlayer + _item, 0, startingHealthPlayer);
+    }
+
+    private bool isDead()
+    {
+        return dead;
     }
 
     private IEnumerator Invulnerability()

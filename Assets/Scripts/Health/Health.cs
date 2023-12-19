@@ -26,6 +26,7 @@ public class Health : MonoBehaviour
         if (currentHealth > 0)
         {
             StartCoroutine(Invulnerability());
+            dead = false;
         }
         else
         {
@@ -42,7 +43,13 @@ public class Health : MonoBehaviour
     }
     public void AddHealth(float _item)
     {
+        if (isDead()) return;
         currentHealth = Mathf.Clamp(currentHealth + _item, 0, startingHealth);
+    }
+
+    private bool isDead()
+    {
+        return dead;
     }
 
     private IEnumerator Invulnerability()
